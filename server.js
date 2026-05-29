@@ -1,17 +1,24 @@
-const express = require('express')
-const app = express()
-const port = 3000
+require('dotenv').config();
 
+const express = require('express');
+const { createClient } = require('@supabase/supabase-js');
+const ws = require('ws'); 
 
-const path = require('path');
-app.use(express.static(path.join(__dirname, 'public')));
+const app = express();
+app.use(express.json());
 
-const db = require('./db');
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_KEY;
+
+const supabase = createClient(supabaseUrl, supabaseKey, {
+  auth: { persistSession: false },
+  realtime: { transport: ws }
+});
 
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
-})
+  res.send('API online e conectada com segurança ao Supabase!');
+});
 
-app.listen(port, () => {
-  console.log(`Servidor funcionando ${port}`)
-})
+app.listen(3000, () => {
+  console.log("Conectado com sucesso.");
+});

@@ -1,21 +1,10 @@
-const mysql = require('mysql2');
+import { createClient } from '@supabase/supabase-js'
+import dotenv from 'dotenv'
 
-/*
-== COMPLETAR ==
-Podemos usar supabase
-*/
+dotenv.config() 
 
-const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'senha do banco',//incompleto
-    database: 'biblioteca',
-    port: '3307'
-});
+const supabaseUrl = process.env.SUPABASE_URL
+const supabaseKey = process.env.SUPABASE_KEY
 
-db.connect(err =>{
-    if(err) throw err;
-    console.log('Conectado ao banco de dados');
-});
 
-module.exports = db;
+export const supabase = createClient(supabaseUrl, supabaseKey)
